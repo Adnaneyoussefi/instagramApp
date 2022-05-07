@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SafeAreaView, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-const Header = () => {
+const Header = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -11,7 +11,7 @@ const Header = () => {
         />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('NewPostScreen')}>
           <Image 
             source={{ uri: 'https://img.icons8.com/external-becris-lineal-becris/64/000000/external-add-mintab-for-ios-becris-lineal-becris.png' }}
             style={styles.icon}/>
