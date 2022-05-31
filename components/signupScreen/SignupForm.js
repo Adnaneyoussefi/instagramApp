@@ -1,24 +1,25 @@
-import { View, Text, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { View, Text, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
 
-const LoginFormSchema = Yup.object().shape({
+const SignupFormSchema = Yup.object().shape({
     email: Yup.string().email().required('An email is required'),
+    username: Yup.string().required().min(2, 'A username is required'),
     password: Yup.string().required().min(8, 'Your password has to have at least 8 characters')
 })
 
-const LoginForm = ({ navigation }) => {
+const SignupForm = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
         <Formik
-            initialValues={{email: '', password: ''}}
+            initialValues={{email: '', username: '', password: ''}}
             onSubmit={values => {
                 console.log(values);
                 console.log('Your post was submitted successfully');
             }}
-            validationSchema={LoginFormSchema}
+            validationSchema={SignupFormSchema}
             validateOnMount={true}
         >
         {({ handleBlur, handleChange, handleSubmit, values, errors, isValid }) => (
@@ -38,6 +39,19 @@ const LoginForm = ({ navigation }) => {
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}  />
+                <TextInput
+                    style={[styles.inputField, 
+                        {
+                            borderColor: values.username.length >= 2 || values.username.length == 0 ? '#ccc' : 'red'
+                        }
+                        ]}
+                    placeholderTextColor='#444'
+                    placeholder='Username'
+                    autoCapitalize='none'
+                    textContentType='username'
+                    onChangeText={handleChange('username')}
+                    onBlur={handleBlur('username')}
+                    value={values.username}  />
                 <TextInput 
                     style={[styles.inputField,
                         {
@@ -60,13 +74,13 @@ const LoginForm = ({ navigation }) => {
                     style={styles.button(isValid)}
                     onPress={handleSubmit}
                     >
-                    <Text style={styles.buttonText}>Log in</Text>
+                    <Text style={styles.buttonText}>Sign up</Text>
                 </Pressable>
 
                 <View style={styles.signupContainer}>
                     <Text>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.push('SignupScreen')}>
-                        <Text style={{ color: '#6BB0F5' }}>Sign up</Text>
+                    <TouchableOpacity onPress={() => navigation.push('LoginScreen')}>
+                        <Text style={{ color: '#6BB0F5' }}>Log in</Text>
                     </TouchableOpacity>
                 </View>
             </>
@@ -107,4 +121,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LoginForm
+export default SignupForm
